@@ -20,63 +20,51 @@ var messageDisplay = document.getElementById("message");
 // Event listener for the game status bar
 var h1 = document.querySelector("h1");
 
-// Target for the easy button from the HTML
-var easyBtn = document.getElementById("easyBtn");
+//Selector for the buttons
+var modeButtons = document.querySelectorAll(".mode");
 
-// Target for the hard button from the HTML
-var hardBtn = document.getElementById("hardBtn");
-
-
-//Easy button event listener
-easyBtn.addEventListener("click", function(){
-	easyBtn.classList.add("selected");
-	hardBtn.classList.remove("selected");
-	numOfSquares = 3;
-	colors = generateRandomColors(numOfSquares);
-	pickedColor = pickColor();
-	colorDisplay.textContent = pickedColor;
-	for(var i = 0; i < squares.length; i++){
-		if(colors[i]){
-			squares[i].style.background = colors[i];
+for(var i = 0; i < modeButtons.length; i++){
+	modeButtons[i].addEventListener("click", function(){
+		modeButtons[0].classList.remove("selected");
+		modeButtons[1].classList.remove("selected");
+		this.classList.add("selected");
+		if(this.textContent === "Easy"){
+			numOfSquares = 3;
 		}else{
-			squares[i].style.display = "none";
+			numOfSquares = 6;
 		}
-	}
-	
-})
+		reset();
+		
+	});
+}
 
-
-// Hard button event listener
-hardBtn.addEventListener("click", function(){
-	hardBtn.classList.add("selected");
-	easyBtn.classList.remove("selected");
-	numOfSquares = 6;
-	colors = generateRandomColors(numOfSquares);
-	pickedColor = pickColor();
-	colorDisplay.textContent = pickedColor;
-	for(var i = 0; i < squares.length; i++){
-			squares[i].style.background = colors[i];
-			squares[i].style.display = "block";
-		}
-	
-})
-
-
-//Event listener for the reset button
-var resetButton = document.getElementById("reset");
-
-resetButton.addEventListener("click", function(){
-	//Button clicked generate random colors
+function reset(){
 	colors = generateRandomColors(numOfSquares);
 	//Pick a new color from the array
 	pickedColor = pickColor();
 	//Change color display to match picked color
 	colorDisplay.textContent = pickedColor;
+	//Reset the span for winning a round
+	messageDisplay.textContent= "";
+	//Reset the Play again message
+	resetButton.textContent = "New Colors";
 	//Change colors of the squares
 	for(var i = 0; i < squares.length; i++){
+		if(colors[i]){
+		squares[i].style.display = "block";	
 		squares[i].style.background = colors[i];
+		}else{
+			squares[i].style.display = "none";
+		}
 	}
-	h1.style.background = "#232323";
+	h1.style.background = "steelblue";
+}
+	
+//Event listener for the reset button
+var resetButton = document.getElementById("reset");
+
+resetButton.addEventListener("click", function(){
+	reset();
 });
 
 colorDisplay.textContent = pickedColor;
